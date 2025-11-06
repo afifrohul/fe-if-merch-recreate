@@ -10,13 +10,13 @@ export default function Navbar() {
   const pathname = usePathname();
   const navItems = [
     { href: "/", label: "All" },
-    { href: "/shirts", label: "Shirts" },
+    { href: "/clothes", label: "Clothes" },
     { href: "/accessories", label: "Accessories" },
     // { href: "/experiences", label: "experiences" },
   ];
   return (
     <div className="w-full flex justify-center ">
-      <nav className="bg-background mx-auto rounded w-full">
+      <nav className="fixed top-0 z-10 bg-background mx-auto rounded w-full bg-white/30 dark:bg-black/30 backdrop-blur-xs">
         <div className="px-4 py-6">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             <div className="flex items-center gap-8">

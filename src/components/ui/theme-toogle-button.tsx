@@ -12,7 +12,7 @@ type TThemeToggleButton = {
 };
 
 const ThemeToggleButton = ({
-  theme = "light",
+  theme = "dark",
   showLabel = false,
   variant = "circle",
   start = "center",
