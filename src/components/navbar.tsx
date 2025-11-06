@@ -21,7 +21,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between gap-4 md:gap-8">
             <div className="flex items-center gap-8">
               <div className="flex justify-center items-center gap-2">
-                <div className="border border-stone-900 dark:border-stone-400 p-2 rounded-lg bg-black">
+                <div className="border p-2 rounded-lg bg-black">
                   <Image
                     src={"/logo-white.png"}
                     width={16}
@@ -48,10 +48,10 @@ export default function Navbar() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-                <div className="border p-2 rounded-lg bg-primary">
-                  <ShoppingCartIcon className="w-4 h-4 text-secondary"></ShoppingCartIcon>
-                </div>
-              <ThemeToogle ></ThemeToogle>
+              <div className="border p-2 rounded-lg bg-primary">
+                <ShoppingCartIcon className="w-4 h-4 text-secondary"></ShoppingCartIcon>
+              </div>
+              <ThemeToogle></ThemeToogle>
             </div>
           </div>
         </div>
