@@ -17,10 +17,12 @@ import {
 import Footer from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
 import { useFAQs } from "@/hooks/content/useFAQ";
+import { useProducts } from "@/hooks/content/useProducts";
 import SkeletonFAQ from "@/components/loader/faq";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import SimpleLoader from "@/components/loader/simple-loader";
+import Link from "next/link";
 
 export default function Home() {
   const [isClientChecked, setIsClientChecked] = useState(false);
@@ -28,7 +30,8 @@ export default function Home() {
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isReady, setIsReady] = useState(false);
 
-  const { data: faqs, isLoading } = useFAQs();
+  const { data: faqs, isLoading: loadingFAQs } = useFAQs();
+  const { data: products, isLoading: loadingProducts } = useProducts();
 
   useEffect(() => {
     const hasLoaded = sessionStorage.getItem("hasLoaded");
@@ -38,7 +41,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (showLoader && !isLoading) {
+    if (showLoader && !loadingFAQs && !loadingProducts) {
       sessionStorage.setItem("hasLoaded", "true");
       setTimeout(() => setIsFadingOut(true), 100);
       const timeout = setTimeout(() => {
@@ -47,7 +50,7 @@ export default function Home() {
       }, 800);
       return () => clearTimeout(timeout);
     }
-  }, [showLoader, isLoading]);
+  }, [showLoader, loadingFAQs, loadingProducts]);
 
   if (!isClientChecked) return null;
   if (showLoader && !isReady) return <SimpleLoader fadingOut={isFadingOut} />;
@@ -56,41 +59,49 @@ export default function Home() {
     {
       image: "/product/bucket.png",
       name: "Infortination Bucket Hat",
+      slug: "topi-infortination",
       price: 39000,
     },
     {
       image: "/product/tumblr.png",
       name: "Informatics Tumbler",
+      slug: "tumbler-if-merch",
       price: 59000,
     },
     {
-      image: "/product/jacketCream.png",
-      name: "Informatics Jacket",
+      image: "/product/cbjacket.png",
+      name: "Jacket Informatics",
+      slug: "jacket-informatics",
       price: 140000,
     },
     {
-      image: "/product/phphd.png",
-      name: "T-shirt PHP Web Programmer",
+      image: "/product/phpb.png",
+      name: "T-shirt PHP",
+      slug: "t-shirt-php",
       price: 89000,
     },
     {
       image: "/product/lanyard.png",
       name: "IF Merch Lanyard",
+      slug: "lanyard-if-merch",
       price: 15000,
     },
     {
       image: "/product/ganci.png",
       name: "Keychain Infortination",
+      slug: "keychain",
       price: 10000,
     },
     {
-      image: "/product/serealhd.png",
-      name: "T-shirt Sereal Coding",
+      image: "/product/serealb.png",
+      name: "T-shirt Cereal Coding",
+      slug: "t-shirt-cereal-coding",
       price: 89000,
     },
     {
       image: "/product/bag.png",
       name: "Totebag IF Merch",
+      slug: "totebag-if-merch",
       price: 45000,
     },
   ];
@@ -108,70 +119,76 @@ export default function Home() {
       <div className="px-4 space-y-4 mt-24">
         <div className="grid grid-cols-[repeat(3, 1fr)] grid-rows-[repeat(2, 1fr)] gap-4">
           <div className="bg-white dark:bg-black relative relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer   rounded border col-span-2 row-span-2 group">
-            <Image
-              src={"/product/jshd.png"}
-              width={720}
-              height={720}
-              alt="js"
-              className="p-24 group-hover:scale-105 duration-300"
-            />
-            <div className="absolute rounded-full border left-16 top-[450px]">
-              <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                <p>T-shirt Javascript Web Programmer</p>
-                <div className="bg-primary rounded-full px-2 py-1">
-                  <p className="">
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                    }).format(89000)}
-                  </p>
+            <Link href={"/products/t-shirt-javascript"}>
+              <Image
+                src={"/product/jshd.png"}
+                width={720}
+                height={720}
+                alt="js"
+                className="p-24 group-hover:scale-105 duration-300"
+              />
+              <div className="absolute rounded-full border left-16 top-[450px]">
+                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
+                  <p>T-shirt Javascript</p>
+                  <div className="bg-primary rounded-full px-2 py-1">
+                    <p className="">
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(89000)}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer   rounded border col-start-3 group">
-            <Image
-              src={"/product/jacket.png"}
-              width={360}
-              height={360}
-              alt="php"
-              className="p-12 group-hover:scale-105 duration-300"
-            />
-            <div className="absolute rounded-full border left-4 top-72">
-              <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                <p>Informatics Jacket</p>
-                <div className="bg-primary rounded-full px-2 py-1">
-                  <p className="">
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                    }).format(140000)}
-                  </p>
+            <Link href={"/products/jacket-informatics"}>
+              <Image
+                src={"/product/jacket.png"}
+                width={360}
+                height={360}
+                alt="php"
+                className="p-12 group-hover:scale-105 duration-300"
+              />
+              <div className="absolute rounded-full border left-4 top-72">
+                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
+                  <p>Jacket Informatics </p>
+                  <div className="bg-primary rounded-full px-2 py-1">
+                    <p className="">
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(140000)}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
           <div className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer   rounded border col-start-3 row-start-2 group">
-            <Image
-              src={"/product/cap.png"}
-              width={360}
-              height={360}
-              alt="sereal"
-              className="p-12 group-hover:scale-105 duration-300"
-            />
-            <div className="absolute rounded-full border left-4 top-72">
-              <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                <p>Infortination Cap Hat</p>
-                <div className="bg-primary rounded-full px-2 py-1">
-                  <p className="">
-                    {new Intl.NumberFormat("id-ID", {
-                      style: "currency",
-                      currency: "IDR",
-                    }).format(45000)}
-                  </p>
+            <Link href={"/products/topi-infortination"}>
+              <Image
+                src={"/product/cap.png"}
+                width={360}
+                height={360}
+                alt="sereal"
+                className="p-12 group-hover:scale-105 duration-300"
+              />
+              <div className="absolute rounded-full border left-4 top-72">
+                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
+                  <p>Infortination Cap Hat</p>
+                  <div className="bg-primary rounded-full px-2 py-1">
+                    <p className="">
+                      {new Intl.NumberFormat("id-ID", {
+                        style: "currency",
+                        currency: "IDR",
+                      }).format(45000)}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            </Link>
           </div>
         </div>
 
@@ -182,27 +199,29 @@ export default function Home() {
             <MarqueeContent className="overflow-hidden" pauseOnHover={false}>
               {content.map((_, index) => (
                 <MarqueeItem className="" key={index}>
-                  <div className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer  rounded border col-start-3 group">
-                    <Image
-                      src={_.image}
-                      width={320}
-                      height={320}
-                      alt="php"
-                      className="p-16 group-hover:scale-105 duration-300"
-                    />
-                    <div className="absolute rounded-full border left-4 top-64">
-                      <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
-                        <p>{_.name}</p>
-                        <div className="bg-primary rounded-full px-2 py-1">
-                          <p className="">
-                            {new Intl.NumberFormat("id-ID", {
-                              style: "currency",
-                              currency: "IDR",
-                            }).format(_.price)}
-                          </p>
+                  <div className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer  rounded border group">
+                    <Link href={`/products/${_.slug}`}>
+                      <Image
+                        src={_.image}
+                        width={320}
+                        height={320}
+                        alt="php"
+                        className="p-16 group-hover:scale-105 duration-300"
+                      />
+                      <div className="absolute rounded-full border left-4 top-64">
+                        <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
+                          <p>{_.name}</p>
+                          <div className="bg-primary rounded-full px-2 py-1">
+                            <p className="">
+                              {new Intl.NumberFormat("id-ID", {
+                                style: "currency",
+                                currency: "IDR",
+                              }).format(_.price)}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    </div>
+                    </Link>
                   </div>
                 </MarqueeItem>
               ))}
@@ -234,7 +253,7 @@ export default function Home() {
               </div>
               <div>
                 <Accordion type="single" collapsible className="w-full">
-                  {isLoading ? (
+                  {loadingFAQs ? (
                     <SkeletonFAQ />
                   ) : (
                     faqs &&
