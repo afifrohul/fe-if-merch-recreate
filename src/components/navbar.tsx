@@ -7,9 +7,8 @@ import ThemeToogle from "@/components/theme-toogle";
 import { ShoppingCartIcon } from "lucide-react";
 
 export default function Navbar() {
-  const navItems = [
-    { href: "/products", label: "Products" },
-  ];
+  const pathname = usePathname();
+  const navItems = [{ href: "/products", label: "Products" }];
   return (
     <div className="w-full flex justify-center ">
       <nav className="fixed top-0 z-10 bg-background mx-auto rounded w-full bg-white/30 dark:bg-black/30 backdrop-blur-xs">
@@ -30,11 +29,13 @@ export default function Navbar() {
                 </div>
               </Link>
               <div className="flex gap-3">
-                {navItems.map((item) => (
+                {navItems.map((item, index) => (
                   <Link
-                    key={item.href}
+                    key={index}
                     href={item.href}
-                    className={`text-xs lg:text-sm transition-all duration-300 hover:text-primary hover:underline font-medium`}
+                    className={`text-xs lg:text-sm transition-all duration-300 hover:text-primary hover:underline font-medium ${
+                      pathname === item.href ? "text-primary font-medium" : null
+                    }`}
                   >
                     {item.label}
                   </Link>
