@@ -8,7 +8,7 @@ import {
 
 const ThemeToggleVariants = () => {
   const { setTheme } = useTheme();
-  const { settings, updateSettings } = useSettings();
+  const { settings, updateSettings, loaded } = useSettings();
   const { startTransition } = useThemeTransition();
   const [mounted, setMounted] = useState(false);
 
@@ -17,7 +17,7 @@ const ThemeToggleVariants = () => {
   }, []);
 
   const handleThemeToggle = useCallback(() => {
-    if (!settings) return; // 🧩 pastikan settings siap
+    if (!settings) return;
 
     const newMode = settings.mode === "dark" ? "light" : "dark";
 
@@ -39,13 +39,13 @@ const ThemeToggleVariants = () => {
     });
   }, [settings, updateSettings, setTheme, startTransition]);
 
-  if (!mounted || !settings) return null;
+  if (!mounted || !loaded) return null; // ⬅️ pastikan siap dulu
 
   const currentTheme =
     settings.mode === "system" ? "light" : settings.mode || "light";
 
   return (
-    <div className="">
+    <div>
       <ThemeToggleButton
         theme={currentTheme}
         onClick={handleThemeToggle}

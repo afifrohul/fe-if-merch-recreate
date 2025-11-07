@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
+import { useTheme } from "next-themes";
 
 const defaultSettings = {
-  mode: "light",
+  mode: "dark",
   theme: {
     styles: {
       light: {},
@@ -11,18 +12,27 @@ const defaultSettings = {
 };
 
 export function useSettings() {
+  const { theme, setTheme } = useTheme();
   const [settings, setSettings] = useState(defaultSettings);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     try {
       const stored = localStorage.getItem("app-settings");
       if (stored) {
-        setSettings(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        setSettings(parsed);
+        setTheme(parsed.mode || "dark");
+      } else {
+        setTheme("dark");
       }
     } catch (err) {
       console.warn("Failed to load settings:", err);
+      setTheme("dark");
+    } finally {
+      setLoaded(true);
     }
-  }, []);
+  }, [setTheme]);
 
   const updateSettings = useCallback((newSettings: typeof defaultSettings) => {
     setSettings(newSettings);
@@ -33,5 +43,5 @@ export function useSettings() {
     }
   }, []);
 
-  return { settings, updateSettings };
+  return { settings, updateSettings, loaded };
 }
