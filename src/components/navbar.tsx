@@ -7,12 +7,8 @@ import ThemeToogle from "@/components/theme-toogle";
 import { ShoppingCartIcon } from "lucide-react";
 
 export default function Navbar() {
-  // const pathname = usePathname();
   const navItems = [
-    { href: "/products", label: "All" },
-    { href: "/clothes", label: "Clothes" },
-    { href: "/accessories", label: "Accessories" },
-    // { href: "/experiences", label: "experiences" },
+    { href: "/products", label: "Products" },
   ];
   return (
     <div className="w-full flex justify-center ">
