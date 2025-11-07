@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "@/components/navbar";
 import Image from "next/image";
 import {
@@ -14,8 +16,42 @@ import {
 } from "@/components/ui/accordion";
 import Footer from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
+import { useFAQs } from "@/hooks/content/useFAQ";
+import SkeletonFAQ from "@/components/loader/faq";
+import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import SimpleLoader from "@/components/loader/simple-loader";
 
 export default function Home() {
+  const [isClientChecked, setIsClientChecked] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isReady, setIsReady] = useState(false);
+
+  const { data: faqs, isLoading } = useFAQs();
+
+  useEffect(() => {
+    const hasLoaded = sessionStorage.getItem("hasLoaded");
+    if (hasLoaded) setIsReady(true);
+    else setShowLoader(true);
+    setIsClientChecked(true);
+  }, []);
+
+  useEffect(() => {
+    if (showLoader && !isLoading) {
+      sessionStorage.setItem("hasLoaded", "true");
+      setTimeout(() => setIsFadingOut(true), 100);
+      const timeout = setTimeout(() => {
+        setShowLoader(false);
+        setIsReady(true);
+      }, 800);
+      return () => clearTimeout(timeout);
+    }
+  }, [showLoader, isLoading]);
+
+  if (!isClientChecked) return null;
+  if (showLoader && !isReady) return <SimpleLoader fadingOut={isFadingOut} />;
+
   const content = [
     {
       image: "/product/bucket.png",
@@ -60,7 +96,14 @@ export default function Home() {
   ];
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{
+        duration: 0.8,
+        ease: [0.25, 0.1, 0.25, 1],
+      }}
+    >
       <Navbar></Navbar>
       <div className="px-4 space-y-4 mt-24">
         <div className="grid grid-cols-[repeat(3, 1fr)] grid-rows-[repeat(2, 1fr)] gap-4">
@@ -175,7 +218,10 @@ export default function Home() {
               </div>
               <div className="mt-6">
                 <p className="text-sm">
-                  IF MERCH is a branding product of the Entrepreneurship Division of HMIF UNEJ that guarantees 100% premium quality materials. Our products include T-shirts, jackets, hats, and various accessories with an informatics theme. 
+                  IF MERCH is a branding product of the Entrepreneurship
+                  Division of HMIF UNEJ that guarantees 100% premium quality
+                  materials. Our products include T-shirts, jackets, hats, and
+                  various accessories with an informatics theme.
                 </p>
               </div>
             </div>
@@ -188,52 +234,19 @@ export default function Home() {
               </div>
               <div>
                 <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="item-1">
-                    <AccordionTrigger>Product Information</AccordionTrigger>
-                    <AccordionContent className="flex flex-col gap-4 text-balance">
-                      <p>
-                        Our flagship product combines cutting-edge technology
-                        with sleek design. Built with premium materials, it
-                        offers unparalleled performance and reliability.
-                      </p>
-                      <p>
-                        Key features include advanced processing capabilities,
-                        and an intuitive user interface designed for both
-                        beginners and experts.
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-2">
-                    <AccordionTrigger>Shipping Details</AccordionTrigger>
-                    <AccordionContent className="flex flex-col gap-4 text-balance">
-                      <p>
-                        We offer worldwide shipping through trusted courier
-                        partners. Standard delivery takes 3-5 business days,
-                        while express shipping ensures delivery within 1-2
-                        business days.
-                      </p>
-                      <p>
-                        All orders are carefully packaged and fully insured.
-                        Track your shipment in real-time through our dedicated
-                        tracking portal.
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
-                  <AccordionItem value="item-3">
-                    <AccordionTrigger>Return Policy</AccordionTrigger>
-                    <AccordionContent className="flex flex-col gap-4 text-balance">
-                      <p>
-                        We stand behind our products with a comprehensive 30-day
-                        return policy. If you&apos;re not completely satisfied,
-                        simply return the item in its original condition.
-                      </p>
-                      <p>
-                        Our hassle-free return process includes free return
-                        shipping and full refunds processed within 48 hours of
-                        receiving the returned item.
-                      </p>
-                    </AccordionContent>
-                  </AccordionItem>
+                  {isLoading ? (
+                    <SkeletonFAQ />
+                  ) : (
+                    faqs &&
+                    faqs.map((item, index) => (
+                      <AccordionItem key={index} value={`item-${index}`}>
+                        <AccordionTrigger>{item.question}</AccordionTrigger>
+                        <AccordionContent className="flex flex-col gap-4 text-balance">
+                          <p>{item.answer}</p>
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))
+                  )}
                 </Accordion>
               </div>
             </div>
@@ -241,6 +254,6 @@ export default function Home() {
         </div>
       </div>
       <Footer></Footer>
-    </div>
+    </motion.div>
   );
 }
