@@ -18,6 +18,7 @@ import Footer from "@/components/footer";
 import { Separator } from "@/components/ui/separator";
 import { useFAQs } from "@/hooks/content/useFAQ";
 import { useProducts } from "@/hooks/content/useProducts";
+import { useCategories } from "@/hooks/content/useCategory";
 import SkeletonFAQ from "@/components/loader/faq";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -31,7 +32,8 @@ export default function Home() {
   const [isReady, setIsReady] = useState(false);
 
   const { data: faqs, isLoading: loadingFAQs } = useFAQs();
-  const { data: products, isLoading: loadingProducts } = useProducts();
+  const { isLoading: loadingProducts } = useProducts();
+  const { isLoading: loadingCategory } = useCategories();
 
   useEffect(() => {
     const hasLoaded = sessionStorage.getItem("hasLoaded");
@@ -41,7 +43,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (showLoader && !loadingFAQs && !loadingProducts) {
+    if (showLoader && !loadingFAQs && !loadingProducts && !loadingCategory) {
       sessionStorage.setItem("hasLoaded", "true");
       setTimeout(() => setIsFadingOut(true), 100);
       const timeout = setTimeout(() => {
@@ -50,7 +52,7 @@ export default function Home() {
       }, 800);
       return () => clearTimeout(timeout);
     }
-  }, [showLoader, loadingFAQs, loadingProducts]);
+  }, [showLoader, loadingFAQs, loadingProducts, loadingCategory]);
 
   if (!isClientChecked) return null;
   if (showLoader && !isReady) return <SimpleLoader fadingOut={isFadingOut} />;

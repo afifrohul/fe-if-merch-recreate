@@ -10,14 +10,18 @@ type Product = {
   category: string;
 };
 
-const fetchProduct = async (): Promise<Product[]> => {
-  const res = await api.get("/products");
+const fetchProduct = async ({
+  search,
+}: {
+  search: string;
+}): Promise<Product[]> => {
+  const res = await api.get(`/products?search=${search}`);
   return res.data.data;
 };
 
-export function useProducts() {
+export function useProducts(search: string = "") {
   return useQuery({
-    queryKey: ["products"],
-    queryFn: fetchProduct,
+    queryKey: ["products", search],
+    queryFn: () => fetchProduct({ search }),
   });
 }
