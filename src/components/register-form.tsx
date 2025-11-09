@@ -165,7 +165,11 @@ export function RegisterForm({
             )}
           />
           <Field>
-            <Button type="submit" disabled={register.isPending}>
+            <Button
+              type="submit"
+              disabled={register.isPending}
+              className="hover:cursor-pointer duration-200"
+            >
               {register.isPending ? "Loading..." : "Register"}
             </Button>
           </Field>

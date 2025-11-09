@@ -106,8 +106,8 @@ export function LoginForm({
             )}
           />
           <Field>
-            <Button type="submit" disabled={login.isPending}>
-              {login.isPending ? "Loading..." : "Login"}
+            <Button type="submit" disabled={login.isPending} className="hover:cursor-pointer duration-200">
+              {login.isPending ? "Loading..." : "Log in"}
             </Button>
           </Field>
         </FieldGroup>
