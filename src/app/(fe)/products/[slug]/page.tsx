@@ -64,7 +64,7 @@ export default function DetailProduct() {
                     >
                       <div className="p-1">
                         <Image
-                          src={`https://be-if-merch-recreate.test/storage/${_.image}`}
+                          src={process.env.NEXT_PUBLIC_STORAGE_URL + _.image}
                           width={480}
                           height={480}
                           alt="php"
@@ -151,7 +151,10 @@ export default function DetailProduct() {
                                 className="h-full flex justify-center items-center"
                               >
                                 <Image
-                                  src={`https://be-if-merch-recreate.test/storage/${_.image}`}
+                                  src={
+                                    process.env.NEXT_PUBLIC_STORAGE_URL +
+                                    _.image
+                                  }
                                   width={320}
                                   height={320}
                                   alt="php"

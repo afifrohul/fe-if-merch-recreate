@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/providers/query-provider";
 import { ScrollToTop } from "@/components/scroll-to-top";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,7 @@ export default function RootLayout({
           <QueryProvider>
             <ScrollToTop />
             {children}
+            <Toaster position="top-center" />
           </QueryProvider>
         </ThemeProvider>
       </body>

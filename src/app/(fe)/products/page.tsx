@@ -113,7 +113,7 @@ export default function Products() {
                   >
                     <Link href={`/products/${_.slug}`}>
                       <Image
-                        src={`https://be-if-merch-recreate.test/storage/${_.image}`}
+                        src={process.env.NEXT_PUBLIC_STORAGE_URL + _.image}
                         width={320}
                         height={320}
                         alt={_.name}
