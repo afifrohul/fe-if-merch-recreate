@@ -9,7 +9,7 @@ export default function SimpleLoader({ fadingOut }: { fadingOut: boolean }) {
       {!fadingOut && (
         <motion.div
           key="loader"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-accent"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-200 dark:bg-neutral-800"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
@@ -32,7 +32,7 @@ export default function SimpleLoader({ fadingOut }: { fadingOut: boolean }) {
       {fadingOut && (
         <motion.div
           key="fadeout"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-accent"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-neutral-200 dark:bg-neutral-800"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
           transition={{ duration: 0.7, ease: "easeInOut" }}
