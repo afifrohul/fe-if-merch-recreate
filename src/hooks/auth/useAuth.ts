@@ -3,6 +3,7 @@ import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo } from "react";
+import Cookies from "js-cookie";
 
 type LoginPayload = {
   email: string;
@@ -28,6 +29,7 @@ export function useAuth() {
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+      Cookies.set("token", data.token);
       toast.success("Login success!");
       router.push("/");
     },
@@ -66,8 +68,9 @@ export function useAuth() {
     onSuccess: () => {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      Cookies.remove("token");
       toast.success("Logged out");
-      router.push("/login");
+      window.location.href = "/login";
     },
   });
 

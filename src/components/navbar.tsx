@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import ThemeToogle from "@/components/theme-toogle";
-import { ShoppingCartIcon, LogOut } from "lucide-react";
+import { ShoppingCartIcon, LogOut, LayoutDashboardIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/auth/useAuth";
 
@@ -56,6 +56,12 @@ export default function Navbar() {
                   <p className="text-sm font-medium hidden md:block">
                     Hi, {user.data[0].name}
                   </p>
+                  <Link href={"/dashboard"}>
+                    <div className="border px-2 py-1.5 rounded border bg-background hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 duration-200 flex items-center gap-2">
+                      <LayoutDashboardIcon className="w-4 h-4" />
+                      <p className="text-sm">Dashboard</p>
+                    </div>
+                  </Link>
                   <Button
                     variant="outline"
                     size="sm"
