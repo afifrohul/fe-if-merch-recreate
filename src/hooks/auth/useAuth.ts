@@ -105,7 +105,7 @@ export function useAuth() {
 
   // === STATE AUTHENTICATION ===
   const isAuthenticated = useMemo(() => {
-    if (checking) return false; // sedang ngecek, belum tahu
+    if (checking) return false;
     const token = localStorage.getItem("token");
     return !!token && !!user;
   }, [checking, user]);

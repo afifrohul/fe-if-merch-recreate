@@ -118,7 +118,7 @@ export default function Home() {
       }}
     >
       <Navbar></Navbar>
-      <div className="px-4 space-y-4 mt-24">
+      <div className="px-4 space-y-4 mt-4">
         <div className="grid grid-cols-[repeat(3, 1fr)] grid-rows-[repeat(2, 1fr)] gap-4">
           <div className="bg-white dark:bg-black relative relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer   rounded border col-span-2 row-span-2 group">
             <Link href={"/products/t-shirt-javascript"}>

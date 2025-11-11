@@ -24,12 +24,14 @@ import { IoIosArrowBack } from "react-icons/io";
 import { Skeleton } from "@/components/ui/skeleton";
 import SkeletonDetailProduct from "@/components/loader/detail-product";
 import { motion } from "framer-motion";
+import { useAuth } from "@/hooks/auth/useAuth";
 
 export default function DetailProduct() {
   const params = useParams<{ slug: string }>();
   const { data: detailProduct, isLoading: loadingDetailProduct } =
     useDetailProducts(params.slug);
   const { data: products, isLoading: loadingProducts } = useProducts();
+  const { user } = useAuth();
 
   return (
     <motion.div
@@ -105,15 +107,30 @@ export default function DetailProduct() {
                       ))}
                     </div>
                   </div>
-                  <div className="mt-4">
-                    <Button
-                      size={"sm"}
-                      className="w-full hover:cursor-pointer duration-200"
-                    >
-                      <p className="font-medium">Add to cart</p>
-                      <ShoppingCartIcon />
-                    </Button>
-                  </div>
+                  {user ? (
+                    <div className="mt-4">
+                      <Button
+                        size={"sm"}
+                        className="w-full hover:cursor-pointer duration-200"
+                      >
+                        <ShoppingCartIcon />
+                        <p className="font-medium">Add to cart</p>
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="mt-4">
+                      <Link href={"/login"}>
+                        <Button
+                          size={"sm"}
+                          className="w-full hover:cursor-pointer duration-200"
+                        >
+                          <p className="font-medium">
+                            Log in to add items to your cart
+                          </p>
+                        </Button>
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>

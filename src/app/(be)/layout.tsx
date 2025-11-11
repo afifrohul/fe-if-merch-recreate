@@ -13,7 +13,7 @@ export default function FeLayout({
           <Navbar />
         </div>
         {/* <Separator /> */}
-        <div className="px-4">{children}</div>
+        <div className="px-4 flex-1">{children}</div>
         <Footer />
       </div>
     </div>
