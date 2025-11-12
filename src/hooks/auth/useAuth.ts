@@ -100,6 +100,7 @@ export function useAuth() {
     if (!checking && !user) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      Cookies.remove("token");
     }
   }, [checking, user]);
 
