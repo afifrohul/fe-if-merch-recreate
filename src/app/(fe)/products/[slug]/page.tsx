@@ -1,7 +1,5 @@
 "use client";
 
-import { useDetailProducts, useProducts } from "@/hooks/content/useProducts";
-import { useParams } from "next/navigation";
 import {
   Carousel,
   CarouselContent,
@@ -15,16 +13,52 @@ import {
   MarqueeFade,
   MarqueeItem,
 } from "@/components/ui/marquee";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Field,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { ShoppingCartIcon } from "lucide-react";
-import Link from "next/link";
-import { IoIosArrowBack } from "react-icons/io";
 import { Skeleton } from "@/components/ui/skeleton";
 import SkeletonDetailProduct from "@/components/loader/detail-product";
+import { useParams } from "next/navigation";
+import Link from "next/link";
+import { ShoppingCartIcon } from "lucide-react";
+import { IoIosArrowBack } from "react-icons/io";
 import { motion } from "framer-motion";
+import { useDetailProducts, useProducts } from "@/hooks/content/useProducts";
 import { useAuth } from "@/hooks/auth/useAuth";
+import { useCart } from "@/hooks/cart/useCart";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+import { toast } from "sonner";
+import { useState } from "react";
+
+const formSchema = z.object({
+  product_id: z.string(),
+  product_variant_id: z.string(),
+});
 
 export default function DetailProduct() {
   const params = useParams<{ slug: string }>();
@@ -32,6 +66,30 @@ export default function DetailProduct() {
     useDetailProducts(params.slug);
   const { data: products, isLoading: loadingProducts } = useProducts();
   const { user } = useAuth();
+  const { addToCart, adding } = useCart();
+  const [open, setOpen] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+  });
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    const payload = {
+      product_id: Number(data.product_id),
+      product_variant_id: Number(data.product_variant_id),
+    };
+
+    addToCart(payload, {
+      onSuccess: () => {
+        toast.success("Item added to cart");
+        setOpen(false);
+        form.reset();
+      },
+      onError: () => {
+        toast.error("Failed to add item");
+      },
+    });
+  }
 
   return (
     <motion.div
@@ -109,13 +167,119 @@ export default function DetailProduct() {
                   </div>
                   {user ? (
                     <div className="mt-4">
-                      <Button
-                        size={"sm"}
-                        className="w-full hover:cursor-pointer duration-200"
-                      >
-                        <ShoppingCartIcon />
-                        <p className="font-medium">Add to cart</p>
-                      </Button>
+                      <Dialog open={open} onOpenChange={setOpen}>
+                        <DialogTrigger asChild>
+                          <Button
+                            size={"sm"}
+                            className="w-full hover:cursor-pointer duration-200"
+                          >
+                            <ShoppingCartIcon />
+                            <p className="font-medium">Add to cart</p>
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="sm:max-w-[425px]">
+                          <form onSubmit={form.handleSubmit(onSubmit)}>
+                            <DialogHeader>
+                              <DialogTitle>Add to cart</DialogTitle>
+                              <DialogDescription>
+                                Select product variant to add to your cart.
+                                Click add when you&apos;re done.
+                              </DialogDescription>
+                            </DialogHeader>
+                            <div className="grid gap-4">
+                              <div className="grid gap-3">
+                                <Controller
+                                  name="product_id"
+                                  control={form.control}
+                                  render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                      <FieldLabel htmlFor="product_id">
+                                        Product
+                                      </FieldLabel>
+                                      <Select
+                                        name={field.name}
+                                        value={String(field.value)}
+                                        onValueChange={field.onChange}
+                                      >
+                                        <SelectTrigger
+                                          id="form-rhf-select-language"
+                                          aria-invalid={fieldState.invalid}
+                                          className="min-w-[120px]"
+                                        >
+                                          <SelectValue placeholder="Select" />
+                                        </SelectTrigger>
+                                        <SelectContent position="item-aligned">
+                                          <SelectItem
+                                            value={String(detailProduct?.id)}
+                                          >
+                                            {detailProduct?.name}
+                                          </SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                      {fieldState.invalid && (
+                                        <FieldError
+                                          errors={[fieldState.error]}
+                                        />
+                                      )}
+                                    </Field>
+                                  )}
+                                />
+                              </div>
+                              <div className="grid gap-3">
+                                <Controller
+                                  name="product_variant_id"
+                                  control={form.control}
+                                  render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                      <FieldLabel htmlFor="product_variant_id">
+                                        Product Variant
+                                      </FieldLabel>
+                                      <Select
+                                        name={field.name}
+                                        value={String(field.value)}
+                                        onValueChange={field.onChange}
+                                      >
+                                        <SelectTrigger
+                                          id="form-rhf-select-language"
+                                          aria-invalid={fieldState.invalid}
+                                          className="min-w-[120px]"
+                                        >
+                                          <SelectValue placeholder="Select" />
+                                        </SelectTrigger>
+                                        <SelectContent position="item-aligned">
+                                          {detailProduct?.variants.map(
+                                            (item, index) => (
+                                              <SelectItem
+                                                key={index}
+                                                value={String(item.id)}
+                                              >
+                                                {item.name}
+                                              </SelectItem>
+                                            )
+                                          )}
+                                        </SelectContent>
+                                      </Select>
+                                      {fieldState.invalid && (
+                                        <FieldError
+                                          errors={[fieldState.error]}
+                                        />
+                                      )}
+                                    </Field>
+                                  )}
+                                />
+                              </div>
+                            </div>
+                            <DialogFooter className="mt-4">
+                              <DialogClose asChild>
+                                <Button variant="outline">Cancel</Button>
+                              </DialogClose>
+                              <Button disabled={adding}>
+                                {adding ? "Adding..." : "Add"}
+                              </Button>
+                            </DialogFooter>
+                          </form>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   ) : (
                     <div className="mt-4">

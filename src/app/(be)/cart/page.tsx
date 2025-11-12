@@ -13,7 +13,7 @@ export default function Cart() {
   const { data: carts, isLoading: loadingCart, deleteCart } = useCart();
 
   const handleDelete = (id: number) => {
-    deleteCart.mutate(id, {
+    deleteCart(id, {
       onSuccess: () => {
         toast.success("Item removed from cart");
       },

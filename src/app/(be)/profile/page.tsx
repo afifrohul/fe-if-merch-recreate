@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import {
   Field,
-  FieldDescription,
   FieldError,
   FieldGroup,
   FieldLabel,
@@ -12,7 +11,6 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -48,7 +46,6 @@ export default function Profile() {
   const { updateProfile } = useProfile();
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    // console.log(data);
     updateProfile.mutate(data);
   }
 
