@@ -8,11 +8,13 @@ export function proxy(request: NextRequest) {
   const protectedRoutes = ["/profile", "/cart", "/transactions"];
 
   if (!token && protectedRoutes.some((path) => pathname.startsWith(path))) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    const loginUrl = new URL("/login", request.url);
+    return NextResponse.redirect(loginUrl);
   }
 
   if (token && ["/login", "/register"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/", request.url));
+    const homeUrl = new URL("/", request.url);
+    return NextResponse.redirect(homeUrl);
   }
 
   return NextResponse.next();

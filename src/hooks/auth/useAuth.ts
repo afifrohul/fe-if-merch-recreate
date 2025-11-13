@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+// hooks/useAuth.ts
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/axios";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -19,6 +20,7 @@ type RegisterPayload = {
 
 export function useAuth() {
   const router = useRouter();
+  const qc = useQueryClient();
 
   // === LOGIN ===
   const login = useMutation({
@@ -27,9 +29,12 @@ export function useAuth() {
       return res.data;
     },
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data.user));
-      Cookies.set("token", data.token);
+      // simpan token di cookie (non-HttpOnly untuk sekarang)
+      if (data.token) {
+        Cookies.set("token", data.token, { sameSite: "lax" });
+      }
+      // refresh data user
+      qc.invalidateQueries({ queryKey: ["auth-check"] });
       toast.success("Login success!");
       router.push("/");
     },
@@ -58,19 +63,20 @@ export function useAuth() {
   // === LOGOUT ===
   const logout = useMutation({
     mutationFn: async () => {
-      const token = localStorage.getItem("token");
-      await api.post(
-        "/logout",
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      // api will read cookie (if necessary) or Authorization header from interceptor
+      await api.post("/logout");
     },
     onSuccess: () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
       Cookies.remove("token");
+      qc.invalidateQueries({ queryKey: ["auth-check"] });
       toast.success("Logged out");
-      window.location.href = "/login";
+      router.push("/login");
+    },
+    onError: () => {
+      // tetap remove token secara lokal
+      Cookies.remove("token");
+      qc.invalidateQueries({ queryKey: ["auth-check"] });
+      router.push("/login");
     },
   });
 
@@ -79,37 +85,29 @@ export function useAuth() {
     data: user,
     isLoading: checking,
     refetch: refetchUser,
+    isError,
   } = useQuery({
     queryKey: ["auth-check"],
     queryFn: async () => {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token");
-
-      const res = await api.get("/user", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      localStorage.setItem("user", JSON.stringify(res.data));
+      // If backend requires Bearer header, interceptor already sets it from cookie
+      const res = await api.get("/user");
       return res.data;
     },
     retry: false,
+    // jika token tidak ada di cookie, kita bisa langsung throw untuk menghindari request
+    enabled: typeof window !== "undefined" ? true : false, // only run on client by default
   });
 
-  // === AUTO CLEANUP TOKEN KETIKA USER INVALID ===
+  // cleanup token ketika user invalid
   useEffect(() => {
-    if (!checking && !user) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
+    if (!checking && isError) {
       Cookies.remove("token");
     }
-  }, [checking, user]);
+  }, [checking, isError]);
 
-  // === STATE AUTHENTICATION ===
   const isAuthenticated = useMemo(() => {
-    if (checking) return false;
-    const token = localStorage.getItem("token");
-    return !!token && !!user;
-  }, [checking, user]);
+    return !!user;
+  }, [user]);
 
   return {
     login,
