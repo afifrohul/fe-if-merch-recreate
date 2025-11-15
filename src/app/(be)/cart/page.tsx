@@ -48,13 +48,16 @@ export default function Cart() {
         <Separator />
       </div>
       <div className="grid grid-cols-3 gap-4 mt-2">
-        <div className="col-span-2 border rounded dark:bg-black p-4 flex flex-col gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
           {loadingCart ? (
             <SkeletonCart />
           ) : (
             carts &&
             carts?.map((_, index) => (
-              <div key={index} className="flex items-start gap-3">
+              <div
+                key={index}
+                className="flex items-start gap-3 border rounded dark:bg-black p-4 "
+              >
                 <Checkbox
                   checked={Boolean(_.is_checked)}
                   onCheckedChange={() =>

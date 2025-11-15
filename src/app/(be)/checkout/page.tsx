@@ -86,13 +86,16 @@ export default function Checkout() {
               />
             </div>
           </div>
-          <div className="border rounded dark:bg-black p-4 flex flex-col gap-4">
+          <div className=" flex flex-col gap-4">
             {loadingCart ? (
               <SkeletonCart />
             ) : (
               checkout &&
               checkout?.map((_, index) => (
-                <div key={index} className="flex items-start gap-3">
+                <div
+                  key={index}
+                  className="flex items-start gap-3 border rounded dark:bg-black p-4"
+                >
                   <div className="flex gap-4 w-full">
                     <div className="border rounded p-2">
                       <Image
@@ -124,7 +127,7 @@ export default function Checkout() {
                           {new Intl.NumberFormat("id-ID", {
                             style: "currency",
                             currency: "IDR",
-                          }).format((_.variant.price) * _.quantity)}
+                          }).format(_.variant.price * _.quantity)}
                         </p>
                       </div>
                     </div>

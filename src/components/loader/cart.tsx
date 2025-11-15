@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function SkeletonCart() {
   return (
     <div className="space-y-4">
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4 border rounded dark:bg-black p-4 ">
         <Skeleton className="w-4 h-4" />
         <div className="flex gap-4 w-full">
           <Skeleton className="w-21 h-21" />
@@ -19,7 +19,7 @@ export default function SkeletonCart() {
           </div>
         </div>
       </div>
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4 border rounded dark:bg-black p-4 ">
         <Skeleton className="w-4 h-4" />
         <div className="flex gap-4 w-full">
           <Skeleton className="w-21 h-21" />
@@ -35,7 +35,7 @@ export default function SkeletonCart() {
           </div>
         </div>
       </div>
-      <div className="flex items-start gap-3">
+      <div className="flex items-start gap-4 border rounded dark:bg-black p-4 ">
         <Skeleton className="w-4 h-4" />
         <div className="flex gap-4 w-full">
           <Skeleton className="w-21 h-21" />
