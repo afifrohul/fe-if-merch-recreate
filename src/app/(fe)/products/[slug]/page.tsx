@@ -54,10 +54,12 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { toast } from "sonner";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 
 const formSchema = z.object({
   product_id: z.string(),
   product_variant_id: z.string(),
+  quantity: z.string(),
 });
 
 export default function DetailProduct() {
@@ -71,12 +73,18 @@ export default function DetailProduct() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      product_id: "",
+      product_variant_id: "",
+      quantity: "",
+    },
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     const payload = {
       product_id: Number(data.product_id),
       product_variant_id: Number(data.product_variant_id),
+      quantity: Number(data.quantity),
     };
 
     addToCart(payload, {
@@ -259,6 +267,33 @@ export default function DetailProduct() {
                                           )}
                                         </SelectContent>
                                       </Select>
+                                      {fieldState.invalid && (
+                                        <FieldError
+                                          errors={[fieldState.error]}
+                                        />
+                                      )}
+                                    </Field>
+                                  )}
+                                />
+                              </div>
+                              <div className="grid gap-3">
+                                <Controller
+                                  name="quantity"
+                                  control={form.control}
+                                  render={({ field, fieldState }) => (
+                                    <Field data-invalid={fieldState.invalid}>
+                                      <FieldLabel htmlFor="quantity">
+                                        Quantity
+                                      </FieldLabel>
+                                      <Input
+                                        {...field}
+                                        id="quantity"
+                                        aria-invalid={fieldState.invalid}
+                                        autoComplete="off"
+                                        placeholder="Min: 1"
+                                        type="number"
+                                        min={1}
+                                      />
                                       {fieldState.invalid && (
                                         <FieldError
                                           errors={[fieldState.error]}

@@ -2,15 +2,24 @@
 
 import ConfirmButton from "@/components/confirm-button";
 import SkeletonCart from "@/components/loader/cart";
+import { QtyCounter } from "@/components/qty-counter";
+import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Separator } from "@/components/ui/separator";
 import { useCart } from "@/hooks/cart/useCart";
 import { TrashIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { toast } from "sonner";
 
 export default function Cart() {
-  const { data: carts, isLoading: loadingCart, deleteCart } = useCart();
+  const {
+    data: carts,
+    isLoading: loadingCart,
+    deleteCart,
+    toggleCheck,
+    updateQty,
+  } = useCart();
 
   const handleDelete = (id: number) => {
     deleteCart(id, {
@@ -22,6 +31,15 @@ export default function Cart() {
       },
     });
   };
+
+  const checked_carts = carts?.filter(function (c) {
+    return Boolean(c.is_checked) === true;
+  });
+
+  const total = checked_carts?.reduce((sum, item) => {
+    const price = Number(item.variant.price);
+    return sum + price * item.quantity;
+  }, 0);
 
   return (
     <div className="p-4">
@@ -37,7 +55,14 @@ export default function Cart() {
             carts &&
             carts?.map((_, index) => (
               <div key={index} className="flex items-start gap-3">
-                <Checkbox />
+                <Checkbox
+                  checked={Boolean(_.is_checked)}
+                  onCheckedChange={() =>
+                    toggleCheck(_.id, { onError: () => toast.error("Failed") })
+                  }
+                  className=""
+                />
+
                 <div className="flex gap-4 w-full">
                   <div className="border rounded p-2">
                     <Image
@@ -64,14 +89,29 @@ export default function Cart() {
                           currency: "IDR",
                         }).format(_.variant.price)}
                       </p>
-                      <ConfirmButton
-                        onConfirm={() => handleDelete(_.id)}
-                        title="Do you want to remove this item from your cart?"
-                      >
-                        <div className="border w-fit h-fit p-2 rounded hover:cursor-pointer duration-200 hover:bg-neutral-100 hover:dark:bg-neutral-700">
-                          <TrashIcon className="w-3 h-3" />
-                        </div>
-                      </ConfirmButton>
+                      <div className="flex gap-4 items-center">
+                        <ConfirmButton
+                          onConfirm={() => handleDelete(_.id)}
+                          title="Do you want to remove this item from your cart?"
+                        >
+                          <div className="border w-fit h-fit p-1.5 rounded hover:cursor-pointer duration-200 hover:bg-neutral-100 hover:dark:bg-neutral-700">
+                            <TrashIcon className="w-3 h-3" />
+                          </div>
+                        </ConfirmButton>
+                        <Separator orientation="vertical"></Separator>
+                        <QtyCounter
+                          qty={_.quantity}
+                          onChange={(newQty) =>
+                            updateQty(
+                              { id: _.id, quantity: newQty },
+                              {
+                                onError: () =>
+                                  toast.error("Failed to update quantity"),
+                              }
+                            )
+                          }
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -79,7 +119,35 @@ export default function Cart() {
             ))
           )}
         </div>
-        <div className="border rounded dark:bg-black p-4 h-fit">Sidebar</div>
+        <div className="border rounded dark:bg-black p-4 h-fit">
+          <h1 className="font-semibold">Shopping Summary</h1>
+          <div className="mt-2 flex items-center justify-between">
+            <p className="text-muted-foreground">Total</p>
+            <p className="font-semibold">
+              {total
+                ? new Intl.NumberFormat("id-ID", {
+                    style: "currency",
+                    currency: "IDR",
+                  }).format(total)
+                : "-"}
+            </p>
+          </div>
+          <Separator className="my-1"></Separator>
+          <div className="w-full mt-2">
+            <Link href={"/checkout"}>
+              <Button
+                size={"sm"}
+                className="w-full hover:cursor-pointer duration-200"
+                disabled={checked_carts?.length == 0}
+              >
+                Buy{" "}
+                {(checked_carts?.length ?? 0) > 0
+                  ? `(${checked_carts?.length ?? 0})`
+                  : null}
+              </Button>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );

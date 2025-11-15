@@ -14,7 +14,7 @@ export default function SkeletonCart() {
             </div>
             <div className="flex flex-col items-end gap-3">
               <Skeleton className="w-24 h-4" />
-              <Skeleton className="w-6 h-6" />
+              <Skeleton className="w-32 h-6" />
             </div>
           </div>
         </div>
@@ -30,7 +30,7 @@ export default function SkeletonCart() {
             </div>
             <div className="flex flex-col items-end gap-3">
               <Skeleton className="w-24 h-4" />
-              <Skeleton className="w-6 h-6" />
+              <Skeleton className="w-32 h-6" />
             </div>
           </div>
         </div>
@@ -46,7 +46,7 @@ export default function SkeletonCart() {
             </div>
             <div className="flex flex-col items-end gap-3">
               <Skeleton className="w-24 h-4" />
-              <Skeleton className="w-6 h-6" />
+              <Skeleton className="w-32 h-6" />
             </div>
           </div>
         </div>

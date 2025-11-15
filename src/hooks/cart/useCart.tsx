@@ -24,22 +24,21 @@ type Cart = {
   user_id: number;
   product_id: number;
   product_variant_id: number;
+  quantity: number;
+  is_checked: boolean;
   product: Product;
   variant: Variant;
 };
 
-// --- GET ALL CART ---
 const fetchCart = async (): Promise<Cart[]> => {
   const res = await api.get("/cart");
   return res.data.data;
 };
 
-// --- DELETE ITEM ---
 const deleteCartItem = async (id: number): Promise<void> => {
   await api.delete(`/cart/${id}`);
 };
 
-// --- ADD ITEM ---
 const addToCart = async (payload: {
   product_id: number;
   product_variant_id: number;
@@ -50,13 +49,11 @@ const addToCart = async (payload: {
 export function useCart() {
   const queryClient = useQueryClient();
 
-  // Fetch cart data
   const query = useQuery({
     queryKey: ["cart"],
     queryFn: fetchCart,
   });
 
-  // Delete cart item
   const deleteMutation = useMutation({
     mutationFn: deleteCartItem,
     onSuccess: () => {
@@ -64,12 +61,25 @@ export function useCart() {
     },
   });
 
-  // Add item to cart
   const addMutation = useMutation({
     mutationFn: addToCart,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
+  });
+
+  const toggleCheck = useMutation({
+    mutationFn: async (id: number) => {
+      return await api.put(`/update-check/${id}`);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
+  });
+
+  const updateQty = useMutation({
+    mutationFn: async ({ id, quantity }: { id: number; quantity: number }) => {
+      return await api.put(`/update-qty/${id}`, { quantity });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cart"] }),
   });
 
   return {
@@ -78,5 +88,7 @@ export function useCart() {
     deleteCart: deleteMutation.mutate,
     adding: addMutation.isPending,
     deleting: deleteMutation.isPending,
+    toggleCheck: toggleCheck.mutate,
+    updateQty: updateQty.mutate,
   };
 }
