@@ -12,12 +12,17 @@ import { RiMoneyDollarCircleLine, RiRefund2Line } from "react-icons/ri";
 import { RxCrossCircled } from "react-icons/rx";
 import { TbClockExclamation } from "react-icons/tb";
 import SkeletonTransaction from "@/components/loader/transaction";
+import { Button } from "@/components/ui/button";
+import ConfirmButton from "@/components/confirm-button";
+import { toast } from "sonner";
 
 export default function Transaction() {
-  const { data: transactions, isLoading: loadingTransaction } =
-    useTransaction();
-
-  console.log(transactions);
+  const {
+    data: transactions,
+    isLoading: loadingTransaction,
+    updateCancel,
+    updateComplete,
+  } = useTransaction();
 
   return (
     <div className="p-4">
@@ -48,10 +53,9 @@ export default function Transaction() {
                       </p>
                       <p>{_.midtrans_order_id}</p>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-6">
                       <div className="flex items-center gap-2">
-                        <div>Payment Status</div>
-                        <div></div>
+                        <div>Transaction Status</div>
                         {_.status === "pending" ? (
                           <div className="w-fit rounded border border-orange-300 bg-orange-50 px-1.5 py-0.5 font-medium text-orange-500">
                             <div className="flex items-center gap-1 text-xs">
@@ -143,7 +147,7 @@ export default function Transaction() {
                             <p className="">
                               {i.product_name} |{" "}
                               <span className="text-muted-foreground text-sm">
-                                {i.variant_name}
+                                {i.variant_name} | {i.sku}
                               </span>
                             </p>
                             <p className="text-muted-foreground text-sm">
@@ -173,6 +177,85 @@ export default function Transaction() {
                       }).format(Number(_.total_amount))}
                     </p>
                   </div>
+                </div>
+                <Separator></Separator>
+                <div className="space-y-4 text-sm">
+                  <div>
+                    <p className="font-semibold">Deliver Address</p>
+                    <p className="text-muted-foreground">{_.notes}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold">Payment Method</p>
+                    <p className="text-muted-foreground">
+                      {_.payment_method || "-"}
+                    </p>
+                  </div>
+                  {_.payment_status === "waiting" && (
+                    <div>
+                      <p className="font-semibold">Payment Link</p>
+                      <p className="text-muted-foreground">
+                        <a
+                          className="underline text-blue-600 hover:text-blue-800 visited:text-purple-800 duration-200"
+                          href={
+                            process.env
+                              .NEXT_PUBLIC_MIDTRANS_SNAP_TOKEN_REDIRECTION +
+                            _.midtrans_snap_token
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Click here to pay
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                </div>
+                <Separator></Separator>
+                <div className="flex justify-end">
+                  {_.payment_status === "waiting" && (
+                    <ConfirmButton
+                      onConfirm={() =>
+                        updateCancel.mutate(_.id, {
+                          onError: () => toast.error("Failed"),
+                        })
+                      }
+                    >
+                      <Button
+                        className="hover:cursor-pointer duration-200"
+                        size={"sm"}
+                        variant={"destructive"}
+                      >
+                        Cancel Transaction
+                      </Button>
+                    </ConfirmButton>
+                  )}
+                  {_.payment_status === "paid" && _.status === "paid" && (
+                    <ConfirmButton
+                      description="Complete transaction means you have received the product from the seller."
+                      onConfirm={() =>
+                        updateComplete.mutate(_.id, {
+                          onError: () => toast.error("Failed"),
+                        })
+                      }
+                    >
+                      <Button
+                        className="hover:cursor-pointer duration-200"
+                        size={"sm"}
+                      >
+                        Complete Transaction
+                      </Button>
+                    </ConfirmButton>
+                  )}
+                  {_.status === "canceled" && (
+                    <p className="text-sm text-red-600 font-semibold">
+                      Transaction Canceled
+                    </p>
+                  )}
+                  {_.status === "completed" && (
+                    <p className="text-sm text-green-600 font-semibold">
+                      Transaction Completed
+                    </p>
+                  )}
                 </div>
               </div>
             ))
