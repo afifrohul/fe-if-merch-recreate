@@ -33,7 +33,7 @@ export default function Transaction() {
         <h1 className="text-lg">Transactions</h1>
         <Separator></Separator>
       </div>
-      <div className="flex gap-2 items-center border p-3 rounded w-fit dark:bg-black">
+      <div className="flex gap-2 items-center border p-3 rounded w-fit bg-white dark:bg-black">
         <p className="text-sm">Transaction Status</p>
         <div className="flex gap-2">
           <div
@@ -95,7 +95,7 @@ export default function Transaction() {
               .map((_, index) => (
                 <div
                   key={index}
-                  className="flex flex-col  gap-3 border rounded dark:bg-black p-4 "
+                  className="flex flex-col  gap-3 border rounded bg-white dark:bg-black p-4 "
                 >
                   <div className="flex gap-4 w-full">
                     <div className="flex items-center gap-2 justify-between text-xs w-full">

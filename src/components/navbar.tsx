@@ -7,7 +7,6 @@ import ThemeToogle from "@/components/theme-toogle";
 import {
   ShoppingCartIcon,
   LogOut,
-  LayoutDashboardIcon,
   UserRoundPenIcon,
   BanknoteIcon,
   ChevronDownIcon,
@@ -19,7 +18,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -31,7 +29,7 @@ export default function Navbar() {
 
   return (
     <div className="w-full flex justify-center">
-      <nav className="bg-background mx-auto rounded w-full bg-white/30 dark:bg-black/30 backdrop-blur-xs ">
+      <nav className="bg-background mx-auto rounded w-full bg-white dark:bg-black/30 backdrop-blur-xs ">
         <div className="px-4 py-6">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             {/* LEFT */}

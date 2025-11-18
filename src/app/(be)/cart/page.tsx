@@ -56,7 +56,7 @@ export default function Cart() {
             carts?.map((_, index) => (
               <div
                 key={index}
-                className="flex items-start gap-3 border rounded dark:bg-black p-4 "
+                className="flex items-start gap-3 border rounded bg-white dark:bg-black p-4 "
               >
                 <Checkbox
                   checked={Boolean(_.is_checked)}
@@ -122,7 +122,7 @@ export default function Cart() {
             ))
           )}
         </div>
-        <div className="border rounded dark:bg-black p-4 h-fit">
+        <div className="border rounded bg-white dark:bg-black p-4 h-fit">
           <h1 className="font-semibold">Shopping Summary</h1>
           <div className="mt-2 flex items-center justify-between">
             <p className="text-muted-foreground">Total</p>

@@ -73,7 +73,7 @@ export default function Checkout() {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <div className="grid grid-cols-3 gap-4 mt-2">
           <div className="col-span-2 space-y-4">
-            <div className="border rounded dark:bg-black p-4 flex flex-col gap-4">
+            <div className="border rounded bg-white dark:bg-black p-4 flex flex-col gap-4">
               <div>
                 <Controller
                   name="note"
@@ -106,7 +106,7 @@ export default function Checkout() {
                 checkout?.map((_, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-3 border rounded dark:bg-black p-4"
+                    className="flex items-start gap-3 border rounded bg-white dark:bg-black p-4"
                   >
                     <div className="flex gap-4 w-full">
                       <div className="border rounded p-2">
@@ -150,7 +150,7 @@ export default function Checkout() {
               )}
             </div>
           </div>
-          <div className="border rounded dark:bg-black p-4 h-fit">
+          <div className="border rounded bg-white dark:bg-black p-4 h-fit">
             <h1 className="font-semibold">Shopping Summary</h1>
             <div className="mt-2 flex items-center justify-between">
               <p className="text-muted-foreground">Total</p>
