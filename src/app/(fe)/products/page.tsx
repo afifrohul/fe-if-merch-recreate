@@ -95,7 +95,7 @@ export default function Products() {
                 .filter(function (p) {
                   if (category != "") {
                     return p.category === category;
-                  } else {
+                  } else {  
                     return p;
                   }
                 })
