@@ -70,13 +70,13 @@ export function useAuth() {
       Cookies.remove("token");
       qc.invalidateQueries({ queryKey: ["auth-check"] });
       toast.success("Logged out");
-      router.push("/login");
+      window.location.href = "/login";
     },
     onError: () => {
       // tetap remove token secara lokal
       Cookies.remove("token");
       qc.invalidateQueries({ queryKey: ["auth-check"] });
-      router.push("/login");
+      window.location.href = "/login";
     },
   });
 

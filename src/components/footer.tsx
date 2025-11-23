@@ -10,18 +10,9 @@ export default function Footer() {
   return (
     <footer className="mt-4">
       <Separator className=""></Separator>
-      <div className="flex flex-col lg:flex-row justify-between items-center p-4 gap-4">
+      <div className="flex flex-row justify-between items-center p-4 gap-4">
         <div className="flex gap-2 items-center justify-center lg:justify-start">
-          <p className="text-xs lg:text-base italic">Built by</p>
-          <Image
-            src={theme === "dark" ? "/afif-light.svg" : "/afif.svg"}
-            alt="Logo"
-            width={16}
-            height={16}
-            className="w-3 h-3"
-            suppressHydrationWarning
-          />
-          <p className="text-xs lg:text-base italic">
+          <p className="text-xs lg:text-sm italic">
             Afif Rohul · &copy; {new Date().getFullYear()} IF MERCH. All rights
             reserved.
           </p>

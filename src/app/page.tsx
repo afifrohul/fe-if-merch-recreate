@@ -119,7 +119,7 @@ export default function Home() {
     >
       <Navbar></Navbar>
       <div className="px-4 space-y-4 mt-4">
-        <div className="grid grid-cols-[repeat(3, 1fr)] grid-rows-[repeat(1, 1fr)] gap-4">
+        <div className="md:grid grid-cols-[repeat(3, 1fr)] grid-rows-[repeat(1, 1fr)] gap-4 space-y-4 md:space-y-0">
           <div className="bg-white dark:bg-black relative relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer   rounded border col-span-2 row-span-2 group">
             <Link href={"/products/t-shirt-javascript"}>
               <Image
@@ -127,19 +127,19 @@ export default function Home() {
                 width={720}
                 height={720}
                 alt="js"
-                className="p-24 group-hover:scale-105 duration-300"
+                className="p-12 md:p-24 group-hover:scale-105 duration-300"
               />
-              <div className="absolute rounded-full border left-16 top-[450px]">
-                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                  <p>T-shirt Javascript</p>
-                  <div className="bg-primary rounded-full px-2 py-1">
-                    <p className="">
-                      {new Intl.NumberFormat("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      }).format(89000)}
-                    </p>
-                  </div>
+              <div className="absolute rounded-full left-4 top-58 md:top-72 lg:left-16 lg:top-[450px]">
+                <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                  <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                    T-shirt Javascript
+                  </h3>
+                  <p className="flex-none rounded-full bg-primary p-2 text-white">
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(89000)}
+                  </p>
                 </div>
               </div>
             </Link>
@@ -153,17 +153,17 @@ export default function Home() {
                 alt="php"
                 className="p-12 group-hover:scale-105 duration-300"
               />
-              <div className="absolute rounded-full border left-4 top-72">
-                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                  <p>Jacket Informatics </p>
-                  <div className="bg-primary rounded-full px-2 py-1">
-                    <p className="">
-                      {new Intl.NumberFormat("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      }).format(140000)}
-                    </p>
-                  </div>
+              <div className="absolute rounded-full left-4 top-58 md:left-2 md:top-42 lg:left-4 lg:top-72">
+                <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                  <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                    Jacket Informatics
+                  </h3>
+                  <p className="flex-none rounded-full bg-primary p-2 text-white">
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(140000)}
+                  </p>
                 </div>
               </div>
             </Link>
@@ -177,17 +177,17 @@ export default function Home() {
                 alt="sereal"
                 className="p-12 group-hover:scale-105 duration-300"
               />
-              <div className="absolute rounded-full border left-4 top-72">
-                <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-sm font-semibold">
-                  <p>Infortination Cap Hat</p>
-                  <div className="bg-primary rounded-full px-2 py-1">
-                    <p className="">
-                      {new Intl.NumberFormat("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      }).format(45000)}
-                    </p>
-                  </div>
+              <div className="absolute rounded-full left-4 top-58 md:left-2 md:top-42 lg:left-4 lg:top-72">
+                <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                  <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                    Infortination Cap Hat
+                  </h3>
+                  <p className="flex-none rounded-full bg-primary p-2 text-white">
+                    {new Intl.NumberFormat("id-ID", {
+                      style: "currency",
+                      currency: "IDR",
+                    }).format(45000)}
+                  </p>
                 </div>
               </div>
             </Link>
@@ -207,21 +207,32 @@ export default function Home() {
                         src={_.image}
                         width={320}
                         height={320}
-                        alt="php"
-                        className="p-16 group-hover:scale-105 duration-300"
+                        alt={_.name}
+                        className="p-8 lg:p-16 w-54 lg:w-80 group-hover:scale-105 duration-300"
                       />
-                      <div className="absolute rounded-full border left-4 top-64">
-                        <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
-                          <p>{_.name}</p>
+                      <div className="absolute rounded-full left-2 top-38 lg:left-4 lg:top-64">
+                        <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                          <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                            {_.name}
+                          </h3>
+                          <p className="flex-none rounded-full bg-primary p-2 text-white">
+                            {new Intl.NumberFormat("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                            }).format(_.price)}
+                          </p>
+                        </div>
+                        {/* <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
+                          <p className="text-xs">{_.name}</p>
                           <div className="bg-primary rounded-full px-2 py-1">
-                            <p className="">
+                            <p className="text-xs">
                               {new Intl.NumberFormat("id-ID", {
                                 style: "currency",
                                 currency: "IDR",
                               }).format(_.price)}
                             </p>
                           </div>
-                        </div>
+                        </div> */}
                       </div>
                     </Link>
                   </div>
@@ -230,8 +241,8 @@ export default function Home() {
             </MarqueeContent>
           </Marquee>
         </div>
-        <div className=" p-4">
-          <div className="grid grid-cols-2 gap-4">
+        <div className="md:p-4 pt-4">
+          <div className="grid md:grid-cols-2 gap-12 md:gap-4">
             <div>
               <div className="w-fit">
                 <h1 className="font-semibold">About IF MERCH</h1>

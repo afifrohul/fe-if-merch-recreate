@@ -10,6 +10,7 @@ import {
   UserRoundPenIcon,
   BanknoteIcon,
   ChevronDownIcon,
+  MenuIcon,
 } from "lucide-react";
 import { useAuth } from "@/hooks/auth/useAuth";
 import {
@@ -20,7 +21,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 export default function Navbar() {
   const pathname = usePathname();
   const { user, logout } = useAuth();
@@ -33,18 +40,19 @@ export default function Navbar() {
         <div className="px-4 py-6">
           <div className="flex items-center justify-between gap-4 md:gap-8">
             {/* LEFT */}
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-4 md:gap-8">
               <Link href={"/"}>
                 <div className="flex justify-center items-center gap-2">
-                  <div className="border p-2 rounded-lg bg-black">
+                  <div className="border p-1.5 md:p-2 rounded md:rounded-lg bg-black">
                     <Image
                       src={"/logo-white.png"}
                       width={16}
                       height={16}
                       alt="logo"
+                      className="w-2 md:w-4"
                     />
                   </div>
-                  <p className="font-bold">IF MERCH.</p>
+                  <p className="text-xs md:text-base font-bold">IF MERCH.</p>
                 </div>
               </Link>
               <div className="flex gap-3">
@@ -65,7 +73,7 @@ export default function Navbar() {
             {/* RIGHT */}
             <div className="flex items-center gap-4">
               {user ? (
-                <>
+                <div className="hidden md:flex">
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                       <div className="flex gap-1 items-center hover:cursor-pointer duration-200">
@@ -107,9 +115,9 @@ export default function Navbar() {
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
-                </>
+                </div>
               ) : (
-                <>
+                <div className="hidden md:flex items-center gap-3">
                   <Link href={"/login"}>
                     <p className="text-sm hover:underline">Log in</p>
                   </Link>
@@ -118,9 +126,62 @@ export default function Navbar() {
                       <p className="text-sm">Register</p>
                     </div>
                   </Link>
-                </>
+                </div>
               )}
               <ThemeToogle />
+              {/* RESPONSIVE MENU */}
+              <div className="md:hidden">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <MenuIcon />
+                  </SheetTrigger>
+                  <SheetContent>
+                    <SheetHeader>
+                      <SheetTitle>Menu</SheetTitle>
+                    </SheetHeader>
+                    <div className="grid flex-1 auto-rows-min gap-6 px-4">
+                      {user ? (
+                        <div className="flex flex-col gap-3">
+                          <Link
+                            href={"/profile"}
+                            className="flex gap-2 items-center"
+                          >
+                            <UserRoundPenIcon className="w-4 h-4" /> Profile
+                          </Link>
+                          <Link
+                            href={"/cart"}
+                            className="flex gap-2 items-center"
+                          >
+                            <ShoppingCartIcon className="w-4 h-4" />
+                            Cart
+                          </Link>
+                          <Link
+                            href={"/transactions"}
+                            className="flex gap-2 items-center"
+                          >
+                            <BanknoteIcon className="w-4 h-4" /> Transactions
+                          </Link>
+                          <div
+                            className="flex items-center gap-2 border w-fit py-0.5 px-1.5 rounded mt-4"
+                            onClick={() => logout.mutate()}
+                          >
+                            <LogOut className="w-4 h-4" /> Logout
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-3">
+                          <Link href={"/login"}>
+                            <p className="text-sm hover:underline">Log in</p>
+                          </Link>
+                          <Link href={"/register"}>
+                            <p className="text-sm hover:underline">Register</p>
+                          </Link>
+                        </div>
+                      )}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
             </div>
           </div>
         </div>
