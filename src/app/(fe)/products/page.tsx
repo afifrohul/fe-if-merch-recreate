@@ -34,7 +34,7 @@ export default function Products() {
       }}
     >
       <div className="flex gap-8 min-h-screen">
-        <div className=" pr-12">
+        <div className=" pr-12 hidden md:block">
           <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
             Categories
           </p>
@@ -90,12 +90,12 @@ export default function Products() {
               <span className="font-semibold">"{debouncedSearchTerm}"</span>
             </div>
           ) : (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid lg:grid-cols-3 gap-4">
               {(products ?? [])
                 .filter(function (p) {
                   if (category != "") {
                     return p.category === category;
-                  } else {  
+                  } else {
                     return p;
                   }
                 })
@@ -109,7 +109,7 @@ export default function Products() {
                 .map((_, index) => (
                   <div
                     key={index}
-                    className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer  rounded border   group"
+                    className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer rounded border group"
                   >
                     <Link href={`/products/${_.slug}`}>
                       <Image
@@ -121,17 +121,17 @@ export default function Products() {
                         unoptimized
                         className="p-16 group-hover:scale-105 duration-300"
                       />
-                      <div className="absolute rounded-full border left-4 top-2">
-                        <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
-                          <p>{_.name}</p>
-                          <div className="bg-primary rounded-full px-2 py-1">
-                            <p className="">
-                              {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                              }).format(_.price)}
-                            </p>
-                          </div>
+                      <div className="absolute rounded-full left-4 top-9/12">
+                        <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                          <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                            {_.name}
+                          </h3>
+                          <p className="flex-none rounded-full bg-primary p-2 text-white">
+                            {new Intl.NumberFormat("id-ID", {
+                              style: "currency",
+                              currency: "IDR",
+                            }).format(_.price)}
+                          </p>
                         </div>
                       </div>
                     </Link>
@@ -140,7 +140,7 @@ export default function Products() {
             </div>
           )}
         </div>
-        <div className=" pr-12">
+        <div className=" pr-12 hidden md:block">
           <p className="text-xs font-medium text-neutral-600 dark:text-neutral-300">
             Sort By
           </p>

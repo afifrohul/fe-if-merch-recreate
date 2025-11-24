@@ -222,17 +222,6 @@ export default function Home() {
                             }).format(_.price)}
                           </p>
                         </div>
-                        {/* <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
-                          <p className="text-xs">{_.name}</p>
-                          <div className="bg-primary rounded-full px-2 py-1">
-                            <p className="text-xs">
-                              {new Intl.NumberFormat("id-ID", {
-                                style: "currency",
-                                currency: "IDR",
-                              }).format(_.price)}
-                            </p>
-                          </div>
-                        </div> */}
                       </div>
                     </Link>
                   </div>
