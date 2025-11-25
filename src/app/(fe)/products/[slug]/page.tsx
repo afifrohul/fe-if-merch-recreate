@@ -122,8 +122,8 @@ export default function DetailProduct() {
           {loadingDetailProduct ? (
             <SkeletonDetailProduct></SkeletonDetailProduct>
           ) : (
-            <div className="flex justify-center">
-              <Carousel className="w-full max-w-lg">
+            <div className="flex flex-col lg:flex-row justify-center">
+              <Carousel className="w-full lg:max-w-lg">
                 <CarouselContent>
                   {detailProduct?.galleries.map((_, index) => (
                     <CarouselItem
@@ -136,7 +136,7 @@ export default function DetailProduct() {
                           width={480}
                           height={480}
                           alt="php"
-                          className="p-2"
+                          className="p-2 w-48 md:w-76 lg:w-96"
                           unoptimized
                         />
                       </div>
@@ -146,13 +146,13 @@ export default function DetailProduct() {
                 <CarouselPrevious />
                 <CarouselNext />
               </Carousel>
-              <div className="w-xl rounded ml-32 px-4 py-12">
+              <div className="lg:w-xl rounded lg:ml-24 px-4 py-12">
                 <div className="space-y-3">
-                  <h1 className="text-3xl font-medium">
+                  <h1 className="text-lg lg:text-3xl font-medium">
                     {detailProduct?.name}
                   </h1>
                   <Separator></Separator>
-                  <p className="text-sm">{detailProduct?.description}</p>
+                  <p className="text-xs lg:text-sm">{detailProduct?.description}</p>
                   <Separator></Separator>
                   <div>
                     <p className="text-lg font-medium">Product Variants</p>
@@ -162,7 +162,7 @@ export default function DetailProduct() {
                           key={index}
                           className="border w-fit py-1 px-2 rounded mt-2 hover:border-primary hover:cursor-pointer duration-200"
                         >
-                          <p className="text-sm">
+                          <p className="text-xs lg:text-sm">
                             {_.name} @
                             {new Intl.NumberFormat("id-ID", {
                               style: "currency",
@@ -181,8 +181,8 @@ export default function DetailProduct() {
                             size={"sm"}
                             className="w-full hover:cursor-pointer duration-200"
                           >
-                            <ShoppingCartIcon />
-                            <p className="font-medium">Add to cart</p>
+                            <ShoppingCartIcon  />
+                            <p className="text-xs font-medium">Add to cart</p>
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-[425px]">
@@ -360,7 +360,7 @@ export default function DetailProduct() {
                           return p.slug !== params.slug;
                         })
                         .map((_, index) => (
-                          <MarqueeItem className="h-96 " key={index}>
+                          <MarqueeItem className="h-64 lg:h-96 " key={index}>
                             <div className="bg-white dark:bg-black relative flex justify-center items-center hover:border-primary duration-200 hover:cursor-pointer rounded border group h-full">
                               <Link
                                 href={`/products/${_.slug}`}
@@ -377,17 +377,17 @@ export default function DetailProduct() {
                                   className="p-20 group-hover:scale-105 duration-300"
                                   unoptimized
                                 />
-                                <div className="absolute rounded-full border left-2 top-80">
-                                  <div className="py-1 pr-1 pl-4 flex items-center gap-4 text-xs font-semibold">
-                                    <p>{_.name}</p>
-                                    <div className="bg-primary rounded-full px-2 py-1">
-                                      <p className="">
-                                        {new Intl.NumberFormat("id-ID", {
-                                          style: "currency",
-                                          currency: "IDR",
-                                        }).format(_.price)}
-                                      </p>
-                                    </div>
+                                <div className="absolute rounded-full border left-2 top-48 lg:top-80">
+                                  <div className="flex items-center rounded-full border bg-white/70 p-1 text-xs font-semibold text-black backdrop-blur-md dark:border-neutral-800 dark:bg-black/70 dark:text-white">
+                                    <h3 className="mr-4 line-clamp-2 grow pl-2 leading-none tracking-tight">
+                                      {_.name}
+                                    </h3>
+                                    <p className="flex-none rounded-full bg-primary p-2 text-white">
+                                      {new Intl.NumberFormat("id-ID", {
+                                        style: "currency",
+                                        currency: "IDR",
+                                      }).format(_.price)}
+                                    </p>
                                   </div>
                                 </div>
                               </Link>
