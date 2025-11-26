@@ -33,9 +33,9 @@ export default function Transaction() {
         <h1 className="text-lg">Transactions</h1>
         <Separator></Separator>
       </div>
-      <div className="flex gap-2 items-center border p-3 rounded w-fit bg-white dark:bg-black">
+      <div className="flex gap-2 md:items-center border p-3 rounded w-fit bg-white dark:bg-black gap-6">
         <p className="text-sm">Transaction Status</p>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <div
             className={`border rounded p-2 w-fit hover:cursor-pointer hover:border-primary hover:text-primary duration-200 ${
               filter === "" ? "border-primary text-primary" : null
@@ -98,18 +98,20 @@ export default function Transaction() {
                   className="flex flex-col  gap-3 border rounded bg-white dark:bg-black p-4 "
                 >
                   <div className="flex gap-4 w-full">
-                    <div className="flex items-center gap-2 justify-between text-xs w-full">
-                      <div className="flex items-center gap-2">
-                        <ShoppingBagIcon className="w-4 h-4" />
-                        <p className="">
-                          {format(
-                            new Date(_.created_at),
-                            "MMMM dd, yyyy H:ii:ss"
-                          )}
-                        </p>
+                    <div className="flex flex-col md:flex-row md:items-center gap-4 justify-between text-xs w-full">
+                      <div className="flex flex-col md:flex-row md:items-center gap-4">
+                        <div className="flex items-center gap-2">
+                          <ShoppingBagIcon className="w-4 h-4" />
+                          <p className="">
+                            {format(
+                              new Date(_.created_at),
+                              "MMMM dd, yyyy H:ii:ss"
+                            )}
+                          </p>
+                        </div>
                         <p>{_.midtrans_order_id}</p>
                       </div>
-                      <div className="flex items-center gap-6">
+                      <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
                         <div className="flex items-center gap-2">
                           <div>Transaction Status</div>
                           {_.status === "pending" ? (
@@ -183,11 +185,11 @@ export default function Transaction() {
                     </div>
                   </div>
                   <Separator></Separator>
-                  <div className="grid grid-cols-4">
-                    <div className="space-y-4 col-span-3">
+                  <div className="grid md:grid-cols-4 gap-4">
+                    <div className="space-y-4 md:col-span-3">
                       {_.items.map((i, index) => (
-                        <div className="flex gap-4 w-full" key={index}>
-                          <div className="border rounded p-2">
+                        <div className="flex flex-col md:flex-row gap-4 w-full" key={index}>
+                          <div className="border rounded p-2 w-fit">
                             <Image
                               src={
                                 process.env.NEXT_PUBLIC_STORAGE_URL +
@@ -225,7 +227,7 @@ export default function Transaction() {
                         </div>
                       ))}
                     </div>
-                    <div className="border-l px-6 text-sm">
+                    <div className="border-t md:border-l md:border-t-0 pt-3 md:px-6 text-sm">
                       <p>Total Amount</p>
                       <p className="font-semibold">
                         {new Intl.NumberFormat("id-ID", {

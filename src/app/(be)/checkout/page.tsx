@@ -71,8 +71,8 @@ export default function Checkout() {
         <Separator />
       </div>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="grid grid-cols-3 gap-4 mt-2">
-          <div className="col-span-2 space-y-4">
+        <div className="grid md:grid-cols-3 gap-4 mt-2">
+          <div className="md:col-span-2 space-y-4">
             <div className="border rounded bg-white dark:bg-black p-4 flex flex-col gap-4">
               <div>
                 <Controller
@@ -88,7 +88,7 @@ export default function Checkout() {
                         id="address"
                         aria-invalid={fieldState.invalid}
                         placeholder="Address..."
-                        className="min-h-[90px]"
+                        className="min-h-[90px] text-xs"
                       />
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -108,8 +108,8 @@ export default function Checkout() {
                     key={index}
                     className="flex items-start gap-3 border rounded bg-white dark:bg-black p-4"
                   >
-                    <div className="flex gap-4 w-full">
-                      <div className="border rounded p-2">
+                    <div className="flex flex-col md:flex-row gap-4 w-full">
+                      <div className="border rounded p-2 w-fit">
                         <Image
                           src={
                             process.env.NEXT_PUBLIC_STORAGE_URL +
@@ -121,14 +121,14 @@ export default function Checkout() {
                           unoptimized
                         ></Image>
                       </div>
-                      <div className="flex justify-between w-full">
+                      <div className="flex flex-col md:flex-row justify-between w-full gap-4">
                         <div>
                           <p className="">{_.product.name}</p>
                           <p className="text-muted-foreground text-sm">
                             {_.variant.name}
                           </p>
                         </div>
-                        <div className="flex flex-col gap-2 items-end">
+                        <div className="flex flex-col gap-2 md:items-end text-sm">
                           <p className="font-semibold">
                             {_.quantity} x{" "}
                             {new Intl.NumberFormat("id-ID", {
@@ -150,7 +150,7 @@ export default function Checkout() {
               )}
             </div>
           </div>
-          <div className="border rounded bg-white dark:bg-black p-4 h-fit">
+          <div className="border rounded bg-white dark:bg-black p-4 h-fit text-sm lg:text-base">
             <h1 className="font-semibold">Shopping Summary</h1>
             <div className="mt-2 flex items-center justify-between">
               <p className="text-muted-foreground">Total</p>

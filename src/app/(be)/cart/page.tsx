@@ -47,8 +47,8 @@ export default function Cart() {
         <h1 className="text-lg">Cart</h1>
         <Separator />
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-2">
-        <div className="col-span-2 flex flex-col gap-4">
+      <div className="grid md:grid-cols-3 gap-4 mt-2">
+        <div className="md:col-span-2 flex flex-col gap-4">
           {loadingCart ? (
             <SkeletonCart />
           ) : (
@@ -66,8 +66,8 @@ export default function Cart() {
                   className=""
                 />
 
-                <div className="flex gap-4 w-full">
-                  <div className="border rounded p-2">
+                <div className="flex flex-col md:flex-row gap-4 w-full">
+                  <div className="border rounded p-2 w-fit">
                     <Image
                       src={
                         process.env.NEXT_PUBLIC_STORAGE_URL + _.product.image
@@ -78,14 +78,14 @@ export default function Cart() {
                       unoptimized
                     ></Image>
                   </div>
-                  <div className="flex justify-between w-full">
+                  <div className="flex flex-col md:flex-row justify-between w-full">
                     <div>
                       <p className="">{_.product.name}</p>
                       <p className="text-muted-foreground text-sm">
                         {_.variant.name}
                       </p>
                     </div>
-                    <div className="flex flex-col gap-2 items-end">
+                    <div className="flex flex-col gap-2 md:items-end">
                       <p className="font-medium">
                         {new Intl.NumberFormat("id-ID", {
                           style: "currency",

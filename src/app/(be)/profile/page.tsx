@@ -51,7 +51,7 @@ export default function Profile() {
 
   return (
     <div>
-      <div className="bg-white dark:bg-black border rounded max-w-4xl mx-auto grid grid-cols-2 p-12">
+      <div className="bg-white dark:bg-black border rounded max-w-4xl mx-auto grid md:grid-cols-2 p-4 md:p-12 gap-4">
         <div>
           <h1 className="font-semibold">Profile Settings</h1>
           <p className="text-sm dark:text-neutral-400">
