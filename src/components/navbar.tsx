@@ -110,7 +110,7 @@ export default function Navbar() {
                         </DropdownMenuItem>
                       </DropdownMenuGroup>
                       <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => logout.mutate()}>
+                      <DropdownMenuItem onClick={() => logout.mutate()} className="hover:cursor-pointer duration-200">
                         <LogOut className="w-4 h-4" /> Logout
                       </DropdownMenuItem>
                     </DropdownMenuContent>
